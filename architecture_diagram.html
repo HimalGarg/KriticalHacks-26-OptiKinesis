@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>OptiKinesis — Architecture Diagram</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #E8E0D4;
+    }
+
+    .diagram {
+      width: 1080px;
+      height: 1080px;
+      background: #FEF6E8;
+      border: 3px solid #8D6E63;
+      border-radius: 20px;
+      padding: 28px 28px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+    }
+
+    /* ── Title ── */
+    .dia-header {
+      text-align: center;
+      margin-bottom: 14px;
+      flex-shrink: 0;
+    }
+
+    .dia-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 900;
+      color: #3E2723;
+      letter-spacing: 0.02em;
+    }
+
+    .dia-title span { color: #C62828; }
+
+    .dia-sub {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #5D4037;
+      font-weight: 500;
+      margin-top: 3px;
+    }
+
+    /* ── Flow Container ── */
+    .flow {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ── Arrow Rows ── */
+    .arrow-row {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-shrink: 0;
+    }
+
+    .arrow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #8D6E63;
+    }
+
+    .arrow-line {
+      width: 2px;
+      height: 10px;
+      background: #8D6E63;
+    }
+
+    .arrow-head {
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 8px solid #8D6E63;
+    }
+
+    /* ── Box Rows ── */
+    .box-row {
+      display: flex;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .box-row.center { justify-content: center; }
+
+    /* ── Boxes ── */
+    .box {
+      border-radius: 12px;
+      padding: 14px 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      flex: 1;
+      position: relative;
+    }
+
+    .box-icon {
+      font-size: 24px;
+      margin-bottom: 4px;
+    }
+
+    .box-title {
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
+
+    .box-desc {
+      font-size: 11px;
+      font-weight: 500;
+      opacity: 0.85;
+      line-height: 1.35;
+      margin-top: 3px;
+    }
+
+    .box-tag {
+      display: inline-block;
+      margin-top: 5px;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Full-width box ── */
+    .box.full { flex: 1; }
+
+    /* ── Color Themes ── */
+    .b-input {
+      background: linear-gradient(145deg, #E3F2FD, #BBDEFB);
+      border: 2px solid #64B5F6;
+      color: #0D47A1;
+    }
+    .b-input .box-tag { background: #0D47A1; color: #fff; }
+
+    .b-process {
+      background: linear-gradient(145deg, #FFF3E0, #FFE0B2);
+      border: 2px solid #FFB74D;
+      color: #E65100;
+    }
+    .b-process .box-tag { background: #E65100; color: #fff; }
+
+    .b-core {
+      background: linear-gradient(145deg, #FCE4EC, #F8BBD0);
+      border: 2px solid #F06292;
+      color: #880E4F;
+    }
+    .b-core .box-tag { background: #880E4F; color: #fff; }
+
+    .b-stab {
+      background: linear-gradient(145deg, #FFF8E1, #FFECB3);
+      border: 2px solid #FFD54F;
+      color: #F57F17;
+    }
+    .b-stab .box-tag { background: #F57F17; color: #fff; }
+
+    .b-safety {
+      background: linear-gradient(145deg, #EFEBE9, #D7CCC8);
+      border: 2px solid #A1887F;
+      color: #4E342E;
+    }
+    .b-safety .box-tag { background: #4E342E; color: #fff; }
+
+    .b-output {
+      background: linear-gradient(145deg, #E8F5E9, #C8E6C9);
+      border: 2px solid #66BB6A;
+      color: #1B5E20;
+    }
+    .b-output .box-tag { background: #1B5E20; color: #fff; }
+
+    .b-emergency {
+      background: linear-gradient(145deg, #FFEBEE, #FFCDD2);
+      border: 2px solid #EF5350;
+      color: #B71C1C;
+    }
+    .b-emergency .box-tag { background: #B71C1C; color: #fff; }
+
+    .b-ui {
+      background: linear-gradient(145deg, #EDE7F6, #D1C4E9);
+      border: 2px solid #9575CD;
+      color: #4A148C;
+    }
+    .b-ui .box-tag { background: #4A148C; color: #fff; }
+
+    .b-voice {
+      background: linear-gradient(145deg, #E0F7FA, #B2EBF2);
+      border: 2px solid #4DD0E1;
+      color: #006064;
+    }
+    .b-voice .box-tag { background: #006064; color: #fff; }
+
+    /* ── Stage Labels ── */
+    .stage-label {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      transform: rotate(180deg);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border-radius: 10px 0 0 10px;
+    }
+
+    /* ── Stage Groups ── */
+    .stage-group {
+      border: 2px dashed;
+      border-radius: 14px;
+      padding: 10px 12px 10px 12px;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .stage-group .sg-label {
+      position: absolute;
+      top: -10px;
+      left: 16px;
+      background: var(--bg, #FEF6E8);
+      padding: 0 8px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .sg-1 { border-color: #FFB74D; --bg: #FEF6E8; }
+    .sg-1 .sg-label { color: #E65100; background: #FEF6E8; }
+
+    .sg-2 { border-color: #FFD54F; --bg: #FEF6E8; }
+    .sg-2 .sg-label { color: #F57F17; background: #FEF6E8; }
+
+    .sg-3 { border-color: #66BB6A; --bg: #FEF6E8; }
+    .sg-3 .sg-label { color: #1B5E20; background: #FEF6E8; }
+
+    .sg-inner {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* ── Thread Badge ── */
+    .thread-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 8px;
+      background: rgba(0,0,0,0.08);
+      margin-top: 4px;
+    }
+
+    /* ── Modules Row ── */
+    .modules-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .module-chip {
+      flex: 1;
+      background: rgba(255,255,255,0.6);
+      border: 1.5px solid rgba(149, 117, 205, 0.4);
+      border-radius: 8px;
+      padding: 6px 8px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .module-chip .mc-icon { font-size: 16px; display: block; margin-bottom: 2px; }
+
+    /* ── Footer ── */
+    .dia-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 8px;
+      border-top: 2px solid #D7CFC0;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+
+    .dia-footer-left {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      color: #5D4037;
+    }
+
+    .dia-footer-left strong { color: #5B1A1A; }
+
+    .dia-footer-right {
+      font-family: 'Playfair Display', serif;
+      font-size: 14px;
+      font-weight: 900;
+      color: #5B1A1A;
+    }
+
+    /* ── Connector Lines (SVG overlay) ── */
+    .connectors {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="diagram">
+
+    <!-- Header -->
+    <div class="dia-header">
+      <div class="dia-title">OptiKinesis — System <span>Architecture</span></div>
+      <div class="dia-sub">Real-time pipeline · 30 FPS · Webcam → Face Tracking → Cursor/Click/Voice → Action</div>
+    </div>
+
+    <div class="flow">
+
+      <!-- ═══ INPUT ═══ -->
+      <div class="box-row center">
+        <div class="box b-input full" style="max-width: 600px;">
+          <div class="box-icon">📷</div>
+          <div class="box-title">Webcam Input</div>
+          <div class="box-desc">Standard laptop camera · 30 FPS · No modifications · No special hardware</div>
+          <div class="box-tag">INPUT LAYER</div>
+        </div>
+      </div>
+
+      <!-- Arrow -->
+      <div class="arrow-row">
+        <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+      </div>
+
+      <!-- ═══ STAGE 1: UNDERSTAND ═══ -->
+      <div class="stage-group sg-1">
+        <div class="sg-label">⚙ Stage 1 — Understand</div>
+        <div class="sg-inner">
+          <div class="box b-process full">
+            <div class="box-icon">🧠</div>
+            <div class="box-title">MediaPipe Face Landmarker</div>
+            <div class="box-desc">478 facial landmarks · float16 model (3.7 MB) · CPU-only · Google ML Kit</div>
+            <div class="thread-badge">🔄 Tracking Thread — 30 FPS (33ms)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Arrow (triple) -->
+      <div class="arrow-row">
+        <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+        <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+        <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+      </div>
+
+      <!-- ═══ SPLIT: Head-Pose / Blink / Voice ═══ -->
+      <div class="box-row">
+        <div class="box b-core">
+          <div class="box-icon">🎯</div>
+          <div class="box-title">Head-Pose Estimation</div>
+          <div class="box-desc">5 anchor landmarks (#234, #454, #10, #152, #1)<br>→ Right axis · Up axis · Forward axis (cross product)<br>→ <strong>Yaw → Screen X</strong> · <strong>Pitch → Screen Y</strong><br>±25° horizontal = full screen · ±18° vertical = full screen</div>
+        </div>
+        <div class="box b-core">
+          <div class="box-icon">👁️</div>
+          <div class="box-title">Blink Detection</div>
+          <div class="box-desc">4 eye landmarks (#33, #159, #133, #145)<br>→ Eye Aspect Ratio (EAR)<br>→ <strong>EAR &lt; 0.2 = Blink Detected</strong><br>Pre-blink position capture · Cursor freeze during blink</div>
+        </div>
+        <div class="box b-voice">
+          <div class="box-icon">🎤</div>
+          <div class="box-title">Voice Command NLP</div>
+          <div class="box-desc">SpeechRecognition API → text<br>→ Regex-based intent parser<br>→ <strong>Action + Parameters</strong><br>"Search pasta on Google" → {google, "pasta"}</div>
+          <div class="thread-badge">🎙️ Voice Thread — On-demand</div>
+        </div>
+      </div>
+
+      <!-- Arrow -->
+      <div class="arrow-row">
+        <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+        <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+        <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+      </div>
+
+      <!-- ═══ STAGE 2: STABILISE ═══ -->
+      <div class="stage-group sg-2">
+        <div class="sg-label">⚖ Stage 2 — Stabilise & Protect</div>
+        <div class="sg-inner">
+          <div class="box b-stab">
+            <div class="box-icon">⚖️</div>
+            <div class="box-title">Triple Smoothing</div>
+            <div class="box-desc">12-frame rolling average<br>EMA filter (α = 0.25)<br>Screen-edge clamping<br>Axis inversion (mirror fix)</div>
+          </div>
+          <div class="box b-safety">
+            <div class="box-icon">🛡️</div>
+            <div class="box-title">Safety Layer</div>
+            <div class="box-desc">250ms cooldown (no double-click)<br>Pre-blink cursor freeze<br>Fatigue monitor (dynamic EAR)<br>Confirmation for sensitive actions</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Arrow -->
+      <div class="arrow-row">
+        <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+        <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+        <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+      </div>
+
+      <!-- ═══ STAGE 3: ACT ═══ -->
+      <div class="stage-group sg-3">
+        <div class="sg-label">▶ Stage 3 — Act</div>
+        <div class="sg-inner" style="flex-direction: column; gap: 8px;">
+          <!-- Action Row -->
+          <div style="display:flex; gap:10px;">
+            <div class="box b-output">
+              <div class="box-icon">🖱️</div>
+              <div class="box-title">Mouse Mover Thread</div>
+              <div class="box-desc">Dedicated thread at <strong>100Hz</strong> (10ms)<br>pyautogui.moveTo() · Decoupled from tracking</div>
+              <div class="thread-badge">⚡ 100 Hz — Separate Thread</div>
+            </div>
+            <div class="box b-output">
+              <div class="box-icon">🔗</div>
+              <div class="box-title">Gaze Click Bridge</div>
+              <div class="box-desc">Qt widgetAt() hit-test<br>→ Overlay widget? Route to Qt button<br>→ No? Fallback to OS mouse click<br>I-beam detection → Auto-open keyboard</div>
+            </div>
+            <div class="box b-emergency">
+              <div class="box-icon">🚨</div>
+              <div class="box-title">Emergency SOS</div>
+              <div class="box-desc">WhatsApp SOS (auto-send 20s)<br>Twilio voice call to contact<br>Direct Dial 100 (Police)<br>Direct Dial 112 (Ambulance)</div>
+              <div class="thread-badge">🆘 One-shot Emergency Threads</div>
+            </div>
+          </div>
+          <!-- UI Layer -->
+          <div class="box b-ui full">
+            <div class="box-title" style="font-size:15px;">🖥️ PyQt5 Desktop Overlay</div>
+            <div class="box-desc">Floating · Translucent · Always-on-Top · Non-Focus-Stealing (Qt.Tool + Qt.WindowDoesNotAcceptFocus)</div>
+            <div class="modules-row">
+              <div class="module-chip"><span class="mc-icon">⌨️</span>Keyboard</div>
+              <div class="module-chip"><span class="mc-icon">📷</span>Camera</div>
+              <div class="module-chip"><span class="mc-icon">🚨</span>Emergency</div>
+              <div class="module-chip"><span class="mc-icon">⚙️</span>Control</div>
+              <div class="module-chip"><span class="mc-icon">🎤</span>Voice</div>
+            </div>
+            <div class="thread-badge">🧵 Main Thread — PyQt5 Event Loop + Flask API Thread</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /flow -->
+
+    <!-- Footer -->
+    <div class="dia-footer">
+      <div class="dia-footer-left">
+        Team <strong>Revolutionaries</strong> — Aditya Kumar · Govind Upadhyay · Himal Garg
+      </div>
+      <div class="dia-footer-right">OptiKinesis</div>
+    </div>
+  </div>
+</body>
+</html>

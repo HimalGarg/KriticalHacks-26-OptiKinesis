@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1920, height=1080, initial-scale=1">
+  <title>OptiKinesis — Solution Slide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #FEF6E8;
+      --maroon: #5B1A1A;
+      --maroon-light: #7A2E2E;
+      --brown: #3E2723;
+      --red: #C62828;
+      --amber: #E8A317;
+      --amber-light: #F5C74A;
+      --gold: #B8860B;
+      --green: #2E7D32;
+      --teal: #00796B;
+      --blue: #1565C0;
+      --purple: #6A1B9A;
+      --text: #2C1810;
+      --text-muted: #5D4037;
+      --border: #D7CFC0;
+      --border-dark: #8D6E63;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: var(--bg);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+    }
+
+    .slide {
+      width: 100vw;
+      height: 100vh;
+      padding: 14px 18px 10px;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 8px;
+      overflow: hidden;
+    }
+
+    /* ── Header Row ── */
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .slide-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(22px, 2.8vw, 32px);
+      font-weight: 900;
+      color: var(--brown);
+      line-height: 1.1;
+    }
+
+    .slide-title span { color: var(--red); }
+
+    .header-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-top: 2px;
+      max-width: 600px;
+      line-height: 1.35;
+    }
+
+    .badge {
+      background: var(--maroon);
+      color: #fff;
+      padding: 8px 22px;
+      font-family: 'Playfair Display', serif;
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      border-radius: 0 0 0 12px;
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+
+    /* ── Main Grid ── */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr 0.85fr;
+      gap: 10px;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    /* ── Column containers ── */
+    .col {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    /* ── Section Label ── */
+    .sec {
+      font-family: 'Playfair Display', serif;
+      font-size: 12px;
+      font-weight: 900;
+      color: var(--maroon);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      border-bottom: 2px solid var(--border-dark);
+      padding-bottom: 2px;
+      margin-bottom: 2px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+
+    .sec::before {
+      content: '';
+      width: 4px;
+      height: 12px;
+      background: var(--maroon);
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    /* ── Stat Boxes ── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .stat {
+      background: #fff;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 7px 9px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+    }
+
+    .stat.a::before { background: var(--amber); }
+    .stat.g::before { background: var(--green); }
+    .stat.b::before { background: var(--blue); }
+    .stat.r::before { background: var(--red); }
+    .stat.t::before { background: var(--teal); }
+    .stat.p::before { background: var(--purple); }
+
+    .stat-v {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--maroon);
+      line-height: 1;
+    }
+
+    .stat-l {
+      font-size: 9px;
+      color: var(--text-muted);
+      font-weight: 500;
+      line-height: 1.25;
+      margin-top: 1px;
+    }
+
+    /* ── Three Layers ── */
+    .layers {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .layer-card {
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1.5px solid var(--border);
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .layer-head {
+      padding: 5px 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 800;
+      font-size: 10.5px;
+    }
+
+    .layer-head .n {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+
+    .l1 .layer-head { background: #E3F2FD; color: #0D47A1; border-bottom: 1.5px solid #90CAF9; }
+    .l1 .n { background: #1565C0; color: #fff; }
+    .l2 .layer-head { background: #FFF3E0; color: #E65100; border-bottom: 1.5px solid #FFB74D; }
+    .l2 .n { background: #E65100; color: #fff; }
+    .l3 .layer-head { background: #E8F5E9; color: #1B5E20; border-bottom: 1.5px solid #81C784; }
+    .l3 .n { background: #2E7D32; color: #fff; }
+
+    .layer-body {
+      padding: 5px 8px 6px;
+      font-size: 9px;
+      color: var(--text-muted);
+      line-height: 1.4;
+      flex: 1;
+    }
+
+    .layer-body li {
+      list-style: none;
+      padding: 1px 0;
+      display: flex;
+      gap: 4px;
+    }
+
+    .layer-body li::before {
+      content: '▸';
+      color: var(--amber);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* ── Architecture Diagram ── */
+    .arch {
+      background: #fff;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 10px;
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      overflow: hidden;
+    }
+
+    .arch-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 11px;
+      font-weight: 900;
+      color: var(--maroon);
+      text-align: center;
+      letter-spacing: 0.06em;
+    }
+
+    .arch-flow {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .arch-row {
+      display: flex;
+      gap: 5px;
+    }
+
+    .arch-box {
+      border-radius: 6px;
+      padding: 5px 7px;
+      text-align: center;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .arch-box-t {
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .arch-box-d {
+      font-size: 8px;
+      opacity: 0.85;
+      line-height: 1.2;
+      margin-top: 1px;
+    }
+
+    .ab-input  { background: linear-gradient(135deg, #E3F2FD, #BBDEFB); border: 1.5px solid #90CAF9; color: #0D47A1; }
+    .ab-proc   { background: linear-gradient(135deg, #FFF3E0, #FFE0B2); border: 1.5px solid #FFB74D; color: #E65100; }
+    .ab-core   { background: linear-gradient(135deg, #FCE4EC, #F8BBD0); border: 1.5px solid #F48FB1; color: #880E4F; }
+    .ab-out    { background: linear-gradient(135deg, #E8F5E9, #C8E6C9); border: 1.5px solid #81C784; color: #1B5E20; }
+    .ab-emer   { background: linear-gradient(135deg, #FFEBEE, #FFCDD2); border: 1.5px solid #EF9A9A; color: #B71C1C; }
+    .ab-ui     { background: linear-gradient(135deg, #EDE7F6, #D1C4E9); border: 1.5px solid #B39DDB; color: #4A148C; }
+
+    .arch-arrow {
+      text-align: center;
+      color: var(--border-dark);
+      font-size: 11px;
+      line-height: 1;
+      letter-spacing: 6px;
+    }
+
+    /* ── Competitive Table ── */
+    .comp-wrap {
+      background: #fff;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .comp {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 9px;
+    }
+
+    .comp th {
+      background: var(--maroon);
+      color: #fff;
+      padding: 5px 6px;
+      text-align: center;
+      font-size: 8.5px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .comp th:first-child { text-align: left; }
+
+    .comp td {
+      padding: 4px 6px;
+      border-bottom: 1px solid #EDE0D0;
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    .comp td:first-child {
+      text-align: left;
+      font-weight: 600;
+    }
+
+    .comp tr:nth-child(even) td { background: #FFF8EE; }
+
+    .comp .hi {
+      background: #E8F5E9 !important;
+      font-weight: 700;
+      color: var(--green);
+    }
+
+    .ck { color: var(--green); font-weight: 700; }
+    .cx { color: #C62828; opacity: 0.7; }
+
+    /* ── Price Row ── */
+    .prices {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .price {
+      border-radius: 8px;
+      padding: 7px 8px;
+      text-align: center;
+      border: 1.5px solid;
+    }
+
+    .price.ex { background: #FFEBEE; border-color: #EF9A9A; }
+    .price.md { background: #FFF3E0; border-color: #FFB74D; }
+    .price.fr { background: #E8F5E9; border-color: #81C784; }
+
+    .price-label {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .price.ex .price-label { color: var(--red); }
+    .price.md .price-label { color: var(--gold); }
+    .price.fr .price-label { color: var(--green); }
+
+    .price-val {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .price.ex .price-val { color: var(--red); }
+    .price.md .price-val { color: var(--gold); }
+    .price.fr .price-val { color: var(--green); }
+
+    .price-desc {
+      font-size: 8px;
+      margin-top: 1px;
+    }
+
+    .price.ex .price-desc { color: #C62828; }
+    .price.md .price-desc { color: #E65100; }
+    .price.fr .price-desc { color: #1B5E20; }
+
+    /* ── Impact Grid ── */
+    .impact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+
+    .impact-item {
+      background: #fff;
+      border: 1.5px solid var(--border);
+      border-radius: 7px;
+      padding: 5px 8px;
+      display: flex;
+      gap: 6px;
+      align-items: flex-start;
+    }
+
+    .impact-item .ic {
+      font-size: 14px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .impact-item .it {
+      font-weight: 800;
+      font-size: 9.5px;
+      color: var(--maroon);
+    }
+
+    .impact-item .id {
+      font-size: 8.5px;
+      color: var(--text-muted);
+      line-height: 1.3;
+    }
+
+    /* ── Target Users ── */
+    .targets {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .target {
+      background: #fff;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 7px;
+      text-align: center;
+    }
+
+    .target-name {
+      font-size: 9px;
+      font-weight: 800;
+      color: var(--maroon);
+    }
+
+    .target-pop {
+      font-size: 8px;
+      color: var(--text-muted);
+    }
+
+    /* ── Callout ── */
+    .callout {
+      background: linear-gradient(135deg, #FFF3DA, #FFF8EE);
+      border: 1.5px solid var(--amber);
+      border-radius: 7px;
+      padding: 6px 10px;
+      font-size: 9.5px;
+      font-weight: 600;
+      color: var(--brown);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      line-height: 1.35;
+      flex-shrink: 0;
+    }
+
+    .callout .ci { font-size: 16px; flex-shrink: 0; }
+
+    /* ── Market Row ── */
+    .market {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+
+    /* ── MotionGlass Row ── */
+    .mg-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+
+    .mg-box {
+      border-radius: 7px;
+      padding: 5px 8px;
+      border: 1.5px solid;
+      font-size: 9px;
+      line-height: 1.35;
+    }
+
+    .mg-box.now { background: #E8F5E9; border-color: #81C784; color: #1B5E20; }
+    .mg-box.future { background: #FFF3E0; border-color: #FFB74D; color: #E65100; }
+
+    .mg-box strong {
+      display: block;
+      font-size: 10px;
+      margin-bottom: 2px;
+    }
+
+    /* ── Recognition Badge ── */
+    .recognition {
+      background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
+      border: 1.5px solid var(--green);
+      border-radius: 7px;
+      padding: 5px 10px;
+      font-size: 9.5px;
+      font-weight: 700;
+      color: #1B5E20;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    /* ── Team Footer ── */
+    .footer {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: var(--maroon);
+      color: #fff;
+      padding: 4px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 9.5px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    .footer .brand {
+      color: var(--amber-light);
+      font-weight: 800;
+    }
+
+    /* ── Pill ── */
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 1px 6px;
+      border-radius: 10px;
+      font-size: 8px;
+      font-weight: 700;
+    }
+
+    .pill-g { background: #E8F5E9; color: #1B5E20; border: 1px solid #A5D6A7; }
+    .pill-b { background: #E3F2FD; color: #0D47A1; border: 1px solid #90CAF9; }
+    .pill-a { background: #FFF3E0; color: #E65100; border: 1px solid #FFB74D; }
+    .pill-r { background: #FFEBEE; color: #C62828; border: 1px solid #EF9A9A; }
+    .pill-p { background: #F3E5F5; color: #6A1B9A; border: 1px solid #CE93D8; }
+
+    /* ── Feature pills row ── */
+    .feat-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .feat-pill {
+      background: #fff;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--maroon);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .feat-pill .fp-icon { font-size: 12px; }
+  </style>
+</head>
+<body>
+  <div class="slide">
+    <div class="badge">SOLUTION</div>
+
+    <!-- ── HEADER ── -->
+    <div class="header-row">
+      <div>
+        <div class="slide-title">OptiKinesis: <span>A Webcam. That's All You Need.</span></div>
+        <div class="header-sub">Software-only assistive technology that transforms any laptop webcam into a complete hands-free computer control system — cursor, clicking, typing, voice commands & emergency SOS. No special hardware. No GPU. No internet for core features. Cost: <strong>₹0</strong>.</div>
+      </div>
+    </div>
+
+    <!-- ── MAIN 3-COLUMN GRID ── -->
+    <div class="main-grid">
+
+      <!-- ══════════════════════════════════════
+           COLUMN 1: Solution + Layers + Price
+           ══════════════════════════════════════ -->
+      <div class="col">
+        <div class="sec">Key Numbers</div>
+        <div class="stats">
+          <div class="stat g">
+            <div class="stat-v">₹ 0</div>
+            <div class="stat-l">Hardware cost — runs on any existing webcam</div>
+          </div>
+          <div class="stat a">
+            <div class="stat-v">478</div>
+            <div class="stat-l">Facial landmarks tracked per frame in real-time</div>
+          </div>
+          <div class="stat b">
+            <div class="stat-v">30 FPS</div>
+            <div class="stat-l">Processing speed — smooth responsive control</div>
+          </div>
+        </div>
+
+        <div class="sec">Three Layers of Interaction</div>
+        <div class="layers">
+          <div class="layer-card l1">
+            <div class="layer-head"><span class="n">1</span> Head-Pose Cursor</div>
+            <div class="layer-body">
+              <ul>
+                <li>Move head → Move cursor</li>
+                <li>±25° = full screen width</li>
+                <li>Triple smoothing (rolling avg + EMA + clamp)</li>
+                <li>100Hz mouse thread</li>
+                <li>5 anchor landmarks → 3D gaze ray</li>
+              </ul>
+            </div>
+          </div>
+          <div class="layer-card l2">
+            <div class="layer-head"><span class="n">2</span> Blink-to-Click</div>
+            <div class="layer-body">
+              <ul>
+                <li>Blink eye → Click mouse</li>
+                <li>Pre-blink position capture</li>
+                <li>250ms cooldown safety</li>
+                <li>Fatigue-aware sensitivity</li>
+                <li>Auto-keyboard on text fields</li>
+              </ul>
+            </div>
+          </div>
+          <div class="layer-card l3">
+            <div class="layer-head"><span class="n">3</span> Voice Commands</div>
+            <div class="layer-body">
+              <ul>
+                <li>Say it → Done</li>
+                <li>Google, YouTube search</li>
+                <li>Email, Alarm, Reminder</li>
+                <li>Regex NLP (offline parsing)</li>
+                <li>Safety confirmations</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="sec">The Gap We Fill (Our Target)</div>
+        <div class="prices">
+          <div class="price ex">
+            <div class="price-label">Eye Trackers</div>
+            <div class="price-val">₹2.5L+</div>
+            <div class="price-desc">Requires proprietary hardware</div>
+          </div>
+          <div class="price md">
+            <div class="price-label">Sip & Puff</div>
+            <div class="price-val">₹15K+</div>
+            <div class="price-desc">Very slow, no cursor freedom</div>
+          </div>
+          <div class="price fr">
+            <div class="price-label">OptiKinesis</div>
+            <div class="price-val">₹ 0</div>
+            <div class="price-desc">Works on existing hardware!</div>
+          </div>
+        </div>
+
+        <div class="sec">5-Module Desktop Overlay (PyQt5)</div>
+        <div class="feat-row">
+          <div class="feat-pill"><span class="fp-icon">⌨️</span> Keyboard</div>
+          <div class="feat-pill"><span class="fp-icon">📷</span> Camera</div>
+          <div class="feat-pill"><span class="fp-icon">🚨</span> Emergency SOS</div>
+          <div class="feat-pill"><span class="fp-icon">⚙️</span> Control</div>
+          <div class="feat-pill"><span class="fp-icon">🎤</span> Voice</div>
+        </div>
+        <div style="font-size:8.5px; color:var(--text-muted); line-height:1.3; margin-top:1px;">
+          Floating · Translucent · Always-on-Top · Never steals focus · Fully blink-operable · Auto-keyboard on text fields
+        </div>
+
+        <div class="callout">
+          <span class="ci">💡</span>
+          <div><strong>Core Thesis:</strong> Digital independence should NOT require expensive specialist hardware. Start with software. Upgrade only when needed.</div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════
+           COLUMN 2: Architecture + Competitive
+           ══════════════════════════════════════ -->
+      <div class="col">
+        <div class="sec">System Architecture — Real-Time Pipeline</div>
+        <div class="arch">
+          <div class="arch-title">🏗️ End-to-End Processing Pipeline (30 FPS)</div>
+          <div class="arch-flow">
+            <!-- Input -->
+            <div class="arch-row">
+              <div class="arch-box ab-input" style="flex:1;">
+                <div class="arch-box-t">📷 Webcam Input</div>
+                <div class="arch-box-d">30 FPS · Standard Laptop Camera · No Modifications</div>
+              </div>
+            </div>
+            <div class="arch-arrow">▼ ▼ ▼</div>
+            <!-- Stage 1 -->
+            <div class="arch-row">
+              <div class="arch-box ab-proc" style="flex:1;">
+                <div class="arch-box-t">🧠 Stage 1: Understand</div>
+                <div class="arch-box-d">MediaPipe Face Landmarker → 478 Facial Landmarks (CPU-only, 3.7MB model)</div>
+              </div>
+            </div>
+            <div class="arch-arrow">▼ ▼ ▼</div>
+            <!-- Split -->
+            <div class="arch-row">
+              <div class="arch-box ab-core">
+                <div class="arch-box-t">🎯 Head-Pose</div>
+                <div class="arch-box-d">5 Anchors → 3D Gaze Ray<br>Yaw→X · Pitch→Y</div>
+              </div>
+              <div class="arch-box ab-core">
+                <div class="arch-box-t">👁️ Blink Detect</div>
+                <div class="arch-box-d">4 Eye Landmarks<br>EAR &lt; 0.2 → Click</div>
+              </div>
+              <div class="arch-box ab-core">
+                <div class="arch-box-t">🎤 Voice NLP</div>
+                <div class="arch-box-d">Speech → Intent<br>Regex Parser</div>
+              </div>
+            </div>
+            <div class="arch-arrow">▼ ▼ ▼</div>
+            <!-- Stage 2 -->
+            <div class="arch-row">
+              <div class="arch-box ab-proc">
+                <div class="arch-box-t">⚖️ Stage 2: Stabilise</div>
+                <div class="arch-box-d">12-Frame Avg · EMA (α=0.25) · Edge Clamp</div>
+              </div>
+              <div class="arch-box ab-proc">
+                <div class="arch-box-t">🛡️ Safety</div>
+                <div class="arch-box-d">250ms Cooldown · Fatigue Monitor · Pre-Blink Freeze</div>
+              </div>
+            </div>
+            <div class="arch-arrow">▼ ▼ ▼</div>
+            <!-- Stage 3 -->
+            <div class="arch-row">
+              <div class="arch-box ab-out">
+                <div class="arch-box-t">🖱️ Mouse</div>
+                <div class="arch-box-d">100Hz Thread</div>
+              </div>
+              <div class="arch-box ab-out">
+                <div class="arch-box-t">🔗 Click Bridge</div>
+                <div class="arch-box-d">Qt Hit-Test</div>
+              </div>
+              <div class="arch-box ab-emer">
+                <div class="arch-box-t">🚨 SOS</div>
+                <div class="arch-box-d">WhatsApp · Call</div>
+              </div>
+            </div>
+            <div class="arch-arrow">▼ ▼ ▼</div>
+            <!-- UI -->
+            <div class="arch-row">
+              <div class="arch-box ab-ui" style="flex:1;">
+                <div class="arch-box-t">🖥️ Stage 3: Act — PyQt5 Desktop Overlay</div>
+                <div class="arch-box-d">⌨ Keyboard · 📷 Camera · 🚨 Emergency · ⚙ Control · 🎤 Voice</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sec">Competitive Analysis</div>
+        <div class="comp-wrap">
+          <table class="comp">
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>Tobii</th>
+                <th>SmartNav</th>
+                <th>Sip/Puff</th>
+                <th>Dragon</th>
+                <th style="background:#2E7D32;">OptiKinesis</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Hardware Cost</td><td>$3K-15K</td><td>$400-600</td><td>$200-800</td><td>$150-500</td><td class="hi">₹ 0</td></tr>
+              <tr><td>Special Hardware</td><td>IR Sensor</td><td>IR Dot</td><td>Mouth Tube</td><td>Mic Only</td><td class="hi">None</td></tr>
+              <tr><td>Cursor Control</td><td>Eye Gaze</td><td>Head</td><td>Scanning</td><td class="cx">✗</td><td class="hi">Head-Pose</td></tr>
+              <tr><td>Click Method</td><td>Dwell</td><td>Switch</td><td>Puff</td><td class="cx">✗</td><td class="hi">Eye Blink</td></tr>
+              <tr><td>Virtual Keyboard</td><td class="cx">3rd Party</td><td class="cx">3rd Party</td><td class="cx">3rd Party</td><td>Dictation</td><td class="hi">Built-In</td></tr>
+              <tr><td>Voice Commands</td><td class="cx">✗</td><td class="cx">✗</td><td class="cx">✗</td><td class="ck">✓</td><td class="hi">✓ Full NLP</td></tr>
+              <tr><td>Emergency SOS</td><td class="cx">✗</td><td class="cx">✗</td><td class="cx">✗</td><td class="cx">✗</td><td class="hi">✓ Call+Msg</td></tr>
+              <tr><td>Fatigue Detection</td><td class="cx">✗</td><td class="cx">✗</td><td class="cx">✗</td><td class="cx">✗</td><td class="hi">✓ Dynamic</td></tr>
+              <tr><td>Open Source</td><td class="cx">✗</td><td class="cx">✗</td><td class="cx">✗</td><td class="cx">✗</td><td class="hi">✓</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════
+           COLUMN 3: Impact + Market + Future
+           ══════════════════════════════════════ -->
+      <div class="col">
+        <div class="sec">Impact — Capabilities Restored</div>
+        <div class="impact-grid">
+          <div class="impact-item">
+            <span class="ic">💬</span>
+            <div><div class="it">Communication</div><div class="id">Type messages, express needs — without caregiver</div></div>
+          </div>
+          <div class="impact-item">
+            <span class="ic">🚨</span>
+            <div><div class="it">Emergency SOS</div><div class="id">Call for help when alone — WhatsApp, Twilio, 100/112</div></div>
+          </div>
+          <div class="impact-item">
+            <span class="ic">💼</span>
+            <div><div class="it">Employment</div><div class="id">Write docs, send emails, browse web — work remotely</div></div>
+          </div>
+          <div class="impact-item">
+            <span class="ic">🤝</span>
+            <div><div class="it">Social Connection</div><div class="id">Social media, video calls — combats isolation</div></div>
+          </div>
+          <div class="impact-item">
+            <span class="ic">🏥</span>
+            <div><div class="it">Healthcare</div><div class="id">Zero-cost deployment in hospitals & rehab centres</div></div>
+          </div>
+          <div class="impact-item">
+            <span class="ic">👨‍👩‍👧</span>
+            <div><div class="it">Caregiver Relief</div><div class="id">Reduced burden · Patient can self-manage digital tasks</div></div>
+          </div>
+        </div>
+
+        <div class="sec">Target Users</div>
+        <div class="targets">
+          <div class="target"><div class="target-name">ALS / MND</div><div class="target-pop">~500K globally</div></div>
+          <div class="target"><div class="target-name">Spinal Cord</div><div class="target-pop">~2.5M globally</div></div>
+          <div class="target"><div class="target-name">Cerebral Palsy</div><div class="target-pop">~17M globally</div></div>
+          <div class="target"><div class="target-name">Parkinson's</div><div class="target-pop">~10M globally</div></div>
+          <div class="target"><div class="target-name">Stroke</div><div class="target-pop">~80M survivors</div></div>
+          <div class="target"><div class="target-name">Muscular Dyst.</div><div class="target-pop">~250K globally</div></div>
+        </div>
+
+        <div class="sec">Market Opportunity</div>
+        <div class="market">
+          <div class="stat a">
+            <div class="stat-v" style="font-size:15px;">$2.8B</div>
+            <div class="stat-l">TAM — AAC Market 2026 → $5-6B by 2035</div>
+          </div>
+          <div class="stat g">
+            <div class="stat-v" style="font-size:15px;">75M+</div>
+            <div class="stat-l">SAM — People needing assistive tech daily</div>
+          </div>
+          <div class="stat b">
+            <div class="stat-v" style="font-size:15px;">1-2M</div>
+            <div class="stat-l">SOM — ALS & Parkinson's via hospitals/NGOs</div>
+          </div>
+        </div>
+
+        <div class="sec">Future: MotionGlass Upgrade</div>
+        <div class="mg-row">
+          <div class="mg-box now">
+            <strong>✅ Software-Only (Today)</strong>
+            Webcam tracking · ₹0 cost · Full access · Sufficient for most
+          </div>
+          <div class="mg-box future">
+            <strong>⬆️ + MotionGlass (Upgrade)</strong>
+            6-axis IMU · Sub-degree precision · BLE wireless · Glasses/clip-on
+          </div>
+        </div>
+
+        <div class="sec">Stakeholders</div>
+        <div class="targets" style="grid-template-columns: 1fr 1fr 1fr 1fr;">
+          <div class="target"><div class="target-name">👨‍⚕️ Caregivers</div></div>
+          <div class="target"><div class="target-name">🏥 Hospitals</div></div>
+          <div class="target"><div class="target-name">🌐 NGOs</div></div>
+          <div class="target"><div class="target-name">🏛️ Govt</div></div>
+        </div>
+
+        <div class="recognition">
+          <span style="font-size:16px;">🏆</span>
+          <div><strong>Samsung Solve for Tomorrow 2026</strong> — Top 40 · AI in Healthcare</div>
+        </div>
+
+        <div class="callout" style="border-color:var(--maroon); background:linear-gradient(135deg,#FFEBEE,#FCE4EC);">
+          <span class="ci">💬</span>
+          <div><strong>Hawking</strong> had a $7K Intel system. The 2.5B others don't. <strong>A laptop webcam & open-source Python should be enough.</strong></div>
+        </div>
+      </div>
+
+    </div><!-- /main-grid -->
+
+    <!-- Footer -->
+    <div class="footer">
+      <span>Team <span class="brand">Revolutionaries</span> — Aditya Kumar · Govind Upadhyay · Himal Garg</span>
+      <span class="brand">OptiKinesis</span>
+    </div>
+  </div>
+</body>
+</html>
