@@ -95,6 +95,14 @@ _WORD_RE = re.compile(r"[A-Za-z']+$")
 
 
 def _build_words(text: str) -> List[str]:
+    """Parse space-separated words into a unique, order-preserved list.
+
+    Args:
+        text: Raw multi-line string containing word lists.
+
+    Returns:
+        List of unique lower-case words preserving priority frequency.
+    """
     seen = set()
     words = []
     for word in text.split():
@@ -111,20 +119,42 @@ _PRONOUN_I = {"i", "i'm", "i'll", "i've", "i'd"}
 
 
 def display_form(word: str) -> str:
-    """How a dictionary word should appear, e.g. 'i' -> 'I'."""
+    """Format dictionary word for display, capitalizing personal pronoun 'I'.
+
+    Args:
+        word: Raw lower-case dictionary token.
+
+    Returns:
+        Display string with proper casing (e.g. 'i\'m' -> 'I\'m').
+    """
     if word in _PRONOUN_I:
         return "I" + word[1:]
     return word
 
 
 def current_word(text_before_cursor: str) -> str:
-    """The partial word immediately before the cursor ('' after a space)."""
+    """Extract the partial word token immediately preceding the cursor.
+
+    Args:
+        text_before_cursor: String content before cursor position.
+
+    Returns:
+        The matched partial word, or empty string if trailing whitespace.
+    """
     match = _WORD_RE.search(text_before_cursor or "")
     return match.group(0) if match else ""
 
 
 def suggest(prefix: str, limit: int = MAX_SUGGESTIONS) -> List[str]:
-    """Up to `limit` whole words that start with `prefix`, most common first."""
+    """Return whole-word completions starting with prefix ordered by frequency.
+
+    Args:
+        prefix: Substring typed by user to complete.
+        limit: Maximum number of completions to return (defaults to MAX_SUGGESTIONS).
+
+    Returns:
+        List of formatted matching candidate words, up to `limit`.
+    """
     if not prefix:
         return []
     lowered = prefix.lower()
