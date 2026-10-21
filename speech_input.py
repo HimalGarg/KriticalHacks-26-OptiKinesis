@@ -81,6 +81,14 @@ class Endpointer:
         self.reason = ""
 
     def feed(self, rms: float) -> bool:
+        """Process one audio frame and evaluate whether utterance has concluded.
+
+        Args:
+            rms: Root-mean-square amplitude of the current audio chunk.
+
+        Returns:
+            True if utterance has stopped (pause, timeout, or max duration reached).
+        """
         self.elapsed += self.frame_s
         if self.threshold is None:
             # Still measuring background noise: only clearly loud sound counts
