@@ -1,9 +1,40 @@
+# Environment & Configuration
 .env
-.venv
-__pycache__/
-*.py[cod]
-.pytest_cache/
+.venv/
+venv/
+env/
 settings.json
 settings.json.tmp
 optikinesis.log*
 tmp/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# IDE and Editor artifacts
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
