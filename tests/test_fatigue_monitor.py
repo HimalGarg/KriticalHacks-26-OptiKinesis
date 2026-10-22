@@ -26,6 +26,27 @@ class FatigueMonitorTests(unittest.TestCase):
         self.assertFalse(monitor.is_fatigued)
         self.assertEqual(len(monitor.blink_timestamps), 0)
 
+    def test_stats_dictionary_format(self):
+        monitor = FatigueMonitor()
+        stats = monitor.get_stats()
+        self.assertIn("is_fatigued", stats)
+        self.assertIn("total_blinks", stats)
+        self.assertIn("current_window_blinks", stats)
+        self.assertIn("average_blinks_per_minute", stats)
+        self.assertFalse(stats["is_fatigued"])
+
+    def test_rolling_window_cleanup(self):
+        config = {
+            "window_size": 2,
+            "blink_threshold": 5,
+            "min_blinks_baseline": 2,
+            "cooldown_period": 1,
+            "sensitivity_reduction": 0.5,
+        }
+        monitor = FatigueMonitor(config)
+        monitor.record_blink()
+        self.assertEqual(len(monitor.blink_timestamps), 1)
+
 
 if __name__ == "__main__":
     unittest.main()
