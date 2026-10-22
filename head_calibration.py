@@ -78,18 +78,22 @@ class CalibrationError(ValueError):
 
 
 def _cross(a: Point, b: Point) -> float:
+    """Compute 2D cross product (determinant) of vectors a and b."""
     return a[0] * b[1] - a[1] * b[0]
 
 
 def _sub(a: Point, b: Point) -> Point:
+    """Compute component-wise subtraction a - b."""
     return (a[0] - b[0], a[1] - b[1])
 
 
 def _mid(a: Point, b: Point) -> Point:
+    """Compute midpoint coordinate between point a and point b."""
     return ((a[0] + b[0]) / 2.0, (a[1] + b[1]) / 2.0)
 
 
 def _distance(a: Point, b: Point) -> float:
+    """Compute Euclidean distance between point a and point b."""
     return math.hypot(a[0] - b[0], a[1] - b[1])
 
 
