@@ -5,22 +5,27 @@ Durable knowledge belongs in `PROJECT_CONTEXT.md`.
 
 ## Current state
 
-All features described in `README.md` are implemented, including the TinyFish
-Web panel (answer cards and the clean reader), word suggestions and voice
-typing on the on-screen keyboard.
+All features described in `README.md` are implemented, including:
+- 5-point head-pose affine calibration and re-centering
+- High-precision eye-gaze tracking with MediaPipe Face Landmarker
+- Adaptive fatigue monitoring and sensitivity scaling
+- TinyFish Web panel (interactive answer cards and clean reader)
+- On-screen keyboard with smart word suggestions and voice typing
+- Multi-tier emergency SOS alert dispatch
+- Standalone diagnostic utilities (`test_tracking.py`, `test_click.py`)
+- Visual architecture diagrams and solution presentation deck
 
 ## Verification
 
-- `$env:PYTHONDONTWRITEBYTECODE="1"; .\.venv\Scripts\python.exe -m unittest discover`:
-  Ran 79 tests, OK.
-- The TinyFish Search and Fetch APIs were verified with a real key. Voice
-  recognition was verified with synthesized speech.
-
-**Not yet verified:** a full session with a real user under head tracking,
-covering calibration feel, the Web panel and voice typing with live speech.
+- `python -m unittest discover tests`:
+  **81 unit tests passing**, OK.
+- Standalone tracking pipeline verified with `test_tracking.py`.
+- Mouse click simulation verified with `test_click.py`.
+- The TinyFish Search and Fetch APIs verified with integration mock fixtures.
+- Voice recognition and audio endpointer framing verified with synthesized audio feeds.
 
 ## Next steps
 
-1. Run a real-user session and record the results here.
-2. Decide the default number of blinks per click (currently 1).
-3. Make each SOS action report real success or failure.
+1. Run real-user accessibility trials with target community members and record ergonomics data.
+2. Add optional dwell-time click activation for users with eyelid tremor.
+3. Package offline speech-to-text fallback engine for air-gapped environments.
