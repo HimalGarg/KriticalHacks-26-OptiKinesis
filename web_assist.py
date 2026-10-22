@@ -84,6 +84,7 @@ class WebAssistError(Exception):
 
 @dataclass(frozen=True)
 class SearchResult:
+    """Individual web search result card metadata and summary snippet."""
     title: str
     url: str
     snippet: str
@@ -93,12 +94,14 @@ class SearchResult:
 
 @dataclass(frozen=True)
 class SearchResults:
+    """Collection of search result cards associated with a query string."""
     query: str
     results: Sequence[SearchResult]
 
 
 @dataclass(frozen=True)
 class Article:
+    """Cleaned article document content for large-print reader display."""
     url: str
     final_url: str
     title: str
@@ -110,10 +113,12 @@ class Article:
 
     @property
     def word_count(self) -> int:
+        """Calculate total word count in article body."""
         return len(re.findall(r"\w+", self.text))
 
     @property
     def reading_minutes(self) -> int:
+        """Estimate reading duration in minutes based on average reading speed."""
         return max(1, round(self.word_count / WORDS_PER_MINUTE))
 
 
